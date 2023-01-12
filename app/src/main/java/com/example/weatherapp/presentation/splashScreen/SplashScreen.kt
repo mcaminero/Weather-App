@@ -15,6 +15,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.weatherapp.R
+import com.example.weatherapp.utils.THREE_SECONDS_WAITING_TIME
+import com.example.weatherapp.utils.TWO_SECONDS_WAITING_TIME
 import kotlinx.coroutines.delay
 
 
@@ -25,7 +27,7 @@ fun SplashScreen(onAnimationFinished: () -> Unit) {
     }
     SplashAnimation(isVisible)
     LaunchedEffect(key1 = isVisible) {
-        delay(3000)
+        delay(THREE_SECONDS_WAITING_TIME)
         isVisible = false
         onAnimationFinished()
     }
@@ -35,7 +37,7 @@ fun SplashScreen(onAnimationFinished: () -> Unit) {
 fun SplashAnimation(isVisible: Boolean) {
     AnimatedVisibility(
         visible = isVisible,
-        exit = fadeOut(tween(2000))
+        exit = fadeOut(tween(TWO_SECONDS_WAITING_TIME))
     ) {
         Column(
             modifier = Modifier

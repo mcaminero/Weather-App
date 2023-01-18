@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Weather App</string>
+    <string name="content_description_for_splash_logo">Weather app logo</string>
 </resources>

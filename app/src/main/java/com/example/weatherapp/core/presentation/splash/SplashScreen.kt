@@ -1,4 +1,4 @@
-package com.example.weatherapp.core.presentation.splashScreen
+package com.example.weatherapp.core.presentation.splash
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween

@@ -6,11 +6,9 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.weatherapp.presentation.mainScreen.MainScreen
-import com.example.weatherapp.presentation.navigation.AppNavigation
+import androidx.navigation.compose.rememberNavController
+import com.example.weatherapp.core.presentation.navigation.RootNavigationGraph
 import com.example.weatherapp.ui.theme.WeatherAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -19,22 +17,13 @@ class MainActivity : ComponentActivity() {
         setContent {
             WeatherAppTheme {
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
+                    modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background
                 ) {
-                    AppNavigation()
+                    RootNavigationGraph(
+                        navController = rememberNavController(), modifier = Modifier
+                    )
                 }
             }
         }
-    }
-}
-
-
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    WeatherAppTheme {
-        MainScreen("Android")
     }
 }

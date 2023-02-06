@@ -35,6 +35,16 @@ class DefaultLocationTracker @Inject constructor(
 
         return suspendCancellableCoroutine { cont ->
             locationClient.lastLocation.apply {
+                //need to check when this if-statement is true
+                if(isComplete){
+                    if(isSuccessful){
+                        cont.resume(result)
+                    } else {
+                        cont.resume(null)
+                    }
+                    return@suspendCancellableCoroutine
+                }
+
                 addOnSuccessListener {
                     cont.resume(it)
                 }

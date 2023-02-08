@@ -38,6 +38,7 @@ fun SplashScreen(onAnimationFinished: () -> Unit) {
 fun SplashAnimation(isVisible: Boolean) {
     AnimatedVisibility(
         visible = isVisible,
+        enter = fadeIn(tween(TWO_SECONDS_WAITING_TIME)),
         exit = fadeOut(tween(TWO_SECONDS_WAITING_TIME))
     ) {
         Column(

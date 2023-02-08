@@ -2,14 +2,14 @@ package com.example.weatherapp.core.data.dto
 
 import com.google.gson.annotations.SerializedName
 
-data class Hourly(
+data class WeatherDataDto(
     @SerializedName("temperature_2m")
     val temperatures: List<Double>,
     val time: List<String>,
     @SerializedName("weathercode")
-    val weatherCode: List<Int>,
+    val weatherCodes: List<Int>,
     @SerializedName("winddirection_10m")
-    val windDirection: List<Double>,
+    val windDirections: List<Double>,
     @SerializedName("windspeed_10m")
-    val windSpeed: List<Double>
+    val windSpeeds: List<Double>
 )

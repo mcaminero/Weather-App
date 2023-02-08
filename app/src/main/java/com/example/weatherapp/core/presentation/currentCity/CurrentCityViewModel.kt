@@ -15,21 +15,19 @@ import javax.inject.Inject
 class CurrentCityViewModel @Inject constructor(
     private val weatherRepository: WeatherRepository,
     private val locationTracker: LocationTracker
-) :
-    ViewModel() {
+) : ViewModel() {
 
     private val _currentCityUiState = MutableStateFlow(CurrentCityUiState())
     val currentCityUiState: StateFlow<CurrentCityUiState>
         get() = _currentCityUiState
 
-
     fun getWeather() = viewModelScope.launch {
         locationTracker.getCurrentLocation()?.let { location ->
             _currentCityUiState.value =
-                when (val response = weatherRepository.getWeather(location.latitude, location.longitude)) {
-                    is NetResponse.Error -> CurrentCityUiState(false, null, response.message!!)
-                    is NetResponse.Loading -> CurrentCityUiState(true, null)
-                    is NetResponse.Success -> CurrentCityUiState(false, response.data)
+                when (val response = weatherRepository.getWeather(location.latitude, location.longitude)){
+                    is NetResponse.Error -> CurrentCityUiState(error = "it has occurred an error")
+                    is NetResponse.Loading -> CurrentCityUiState(isLoading = true)
+                    is NetResponse.Success -> CurrentCityUiState(isLoading = false, currentCityData = response.data)
                 }
         }
     }

@@ -1,16 +1,25 @@
 package com.example.weatherapp.core.presentation.navigation
 
+import android.app.Activity
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.weatherapp.core.presentation.baseUi.BaseScreen
 import com.example.weatherapp.core.presentation.currentCity.CurrentCityScreen
+import com.example.weatherapp.core.presentation.currentCity.CurrentCityViewModel
 import com.example.weatherapp.core.presentation.currentCity.MainScreen
+import com.example.weatherapp.core.presentation.favoriteCities.FavoriteCitiesScreen
+import com.example.weatherapp.core.presentation.favoriteCities.FavoriteCitiesViewModel
 import com.example.weatherapp.core.presentation.splash.SplashScreen
 import com.example.weatherapp.utils.Graph
 import com.example.weatherapp.utils.Screens
@@ -28,14 +37,18 @@ fun RootNavigationGraph(navController: NavHostController, modifier: Modifier) {
                 navController.navigate(Graph.MainGraph)
             }
         }
-        composable(Graph.MainGraph){
+        composable(Graph.MainGraph) {
             MainScreen()
         }
     }
 }
 
 @Composable
-fun MainNavigationGraph(modifier: Modifier,navController: NavHostController) {
+fun MainNavigationGraph(
+    modifier: Modifier,
+    scaffoldState: ScaffoldState,
+    navController: NavHostController
+) {
     NavHost(
         navController = navController,
         route = Graph.MainGraph,
@@ -43,17 +56,38 @@ fun MainNavigationGraph(modifier: Modifier,navController: NavHostController) {
         modifier = modifier
     ) {
         composable(Screens.CurrentCityScreen.route) {
-            CurrentCityScreen(navController)
+            val activity = LocalContext.current as Activity
+            val viewModel = hiltViewModel<CurrentCityViewModel>()
+            BaseScreen(
+                scaffoldState = scaffoldState,
+                viewModel = viewModel,
+                onError = { viewModel.getWeather() }
+            ) {
+                CurrentCityScreen(viewModel)
+            }
+
+            BackHandler {
+                activity.finishAffinity()
+            }
         }
         composable(Screens.FavoriteCitiesScreen.route) {
-            Box(modifier = Modifier.fillMaxSize()) {
-                Text(
-                    text = "Favorite Cities Screen",
-                    modifier = Modifier.align(Alignment.Center)
-                )
+            val viewModel = hiltViewModel<FavoriteCitiesViewModel>()
+            BaseScreen(
+                scaffoldState = scaffoldState,
+                viewModel = viewModel,
+                onError = { }
+            ) {
+                FavoriteCitiesScreen(navController,viewModel)
             }
         }
         composable(Screens.SearchScreen.route) {
+//            BaseScreen(
+//                scaffoldState = scaffoldState,
+//                viewModel = hiltViewModel<SearchCityViewModel>(),
+//                onError = { /*TODO*/ }
+//            ) {
+//                CurrentCityScreen(navController)
+//            }
             Box(modifier = Modifier.fillMaxSize()) {
                 Text(
                     text = "Search Screen",

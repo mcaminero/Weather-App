@@ -1,34 +1,45 @@
 package com.example.weatherapp.core.presentation.currentCity
 
-import androidx.lifecycle.ViewModel
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import com.example.weatherapp.core.domain.location.LocationTracker
+import com.example.weatherapp.core.domain.model.WeatherReport
 import com.example.weatherapp.core.domain.repository.WeatherRepository
-import com.example.weatherapp.utils.NetResponse
+import com.example.weatherapp.core.presentation.baseUi.BaseViewModel
+import com.example.weatherapp.core.presentation.dispatchers.DispatcherProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CurrentCityViewModel @Inject constructor(
     private val weatherRepository: WeatherRepository,
-    private val locationTracker: LocationTracker
-) : ViewModel() {
+    private val locationTracker: LocationTracker,
+    dispatcherProvider: DispatcherProvider
+) : BaseViewModel(dispatcherProvider) {
 
-    private val _currentCityUiState = MutableStateFlow(CurrentCityUiState())
-    val currentCityUiState: StateFlow<CurrentCityUiState>
-        get() = _currentCityUiState
+    private val _weatherReport = mutableStateOf<WeatherReport?>(null)
+    val weatherReport: State<WeatherReport?>
+        get() = _weatherReport
+
+    init {
+        getWeather()
+    }
 
     fun getWeather() = viewModelScope.launch {
         locationTracker.getCurrentLocation()?.let { location ->
-            _currentCityUiState.value =
-                when (val response = weatherRepository.getWeather(location.latitude, location.longitude)){
-                    is NetResponse.Error -> CurrentCityUiState(error = "it has occurred an error")
-                    is NetResponse.Loading -> CurrentCityUiState(isLoading = true)
-                    is NetResponse.Success -> CurrentCityUiState(isLoading = false, currentCityData = response.data)
+            safeLaunchAndHandleLoading(
+                toRunFunction = {
+                    weatherRepository.getWeather(
+                        location.latitude,
+                        location.longitude
+                    )
+                },
+                emitAfterSuccessToUi = {
+                    _weatherReport.value = it
                 }
+            )
         }
     }
 }

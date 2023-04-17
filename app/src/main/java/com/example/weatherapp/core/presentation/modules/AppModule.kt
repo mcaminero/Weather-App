@@ -7,12 +7,12 @@ import com.example.weatherapp.core.data.remote.WeatherApi
 import com.example.weatherapp.core.data.repository.WeatherRepositoryImp
 import com.example.weatherapp.core.domain.location.LocationTracker
 import com.example.weatherapp.core.domain.repository.WeatherRepository
+import com.example.weatherapp.core.presentation.dispatchers.DispatcherProvider
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -26,6 +26,7 @@ import javax.inject.Singleton
 object AppModule {
 
     private val logger = HttpLoggingInterceptor().setLevel(Level.BODY)
+    //todo: ver el tema del timeout
     private val client = OkHttpClient.Builder().addInterceptor(logger)
 
     @Provides
@@ -53,5 +54,11 @@ object AppModule {
     @Singleton
     fun providesLocationTracker(client: FusedLocationProviderClient,app: Application): LocationTracker{
         return DefaultLocationTracker(client,app)
+    }
+
+    @Provides
+    @Singleton
+    fun providesDefaultDispatcher(): DispatcherProvider {
+        return DispatcherProvider()
     }
 }

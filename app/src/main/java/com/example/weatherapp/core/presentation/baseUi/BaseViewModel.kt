@@ -36,16 +36,6 @@ abstract class BaseViewModel(
         }
     }
 
-    /*protected suspend fun handleBaseError(ex: Exception){
-        when(ex){
-            is HttpException -> {
-                    safeLaunchAndHandleLoading(
-                        {}
-                    )
-            }
-        }
-    }*/
-
 
     protected suspend fun emit(baseUiState: BaseUiState) = withContext(dispatcherProvider.main) {
         _baseUi.value = baseUiState

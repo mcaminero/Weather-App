@@ -110,7 +110,6 @@ fun CurrentCityScreen(viewModel: CurrentCityViewModel) {
             )
         }
     }
-
 }
 
 @Composable
@@ -232,21 +231,6 @@ fun WeatherDataTodayScreen(modifier: Modifier, weatherReport: WeatherReport) {
         }
     }
 }
-
-//@Preview(showBackground = true, showSystemUi = true)
-//@Composable
-//fun WeatherDataTodayScreenPrev() {
-//    WeatherDataTodayScreen(
-//        modifier = Modifier,
-//        weatherReport = WeatherData(
-//            LocalDateTime.now(),
-//            0.0,
-//            WeatherType.ClearSky,
-//            180.0,
-//            0.0
-//        )
-//    )
-//}
 
 @Composable
 fun BottomNavigationBar(navController: NavHostController) {

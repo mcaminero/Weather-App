@@ -9,5 +9,8 @@ import retrofit2.http.Query
 interface WeatherApi {
 
     @GET("v1/forecast?&hourly=temperature_2m,weathercode,windspeed_10m,winddirection_10m")
-    suspend fun getWeather(@Query("latitude") lat: Double, @Query("longitude") long: Double): WeatherResponse
+    suspend fun getWeather(
+        @Query("latitude") lat: Double,
+        @Query("longitude") long: Double
+    ): WeatherResponse
 }

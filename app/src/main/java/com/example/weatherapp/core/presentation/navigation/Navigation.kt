@@ -81,13 +81,6 @@ fun MainNavigationGraph(
             }
         }
         composable(Screens.SearchScreen.route) {
-//            BaseScreen(
-//                scaffoldState = scaffoldState,
-//                viewModel = hiltViewModel<SearchCityViewModel>(),
-//                onError = { /*TODO*/ }
-//            ) {
-//                CurrentCityScreen(navController)
-//            }
             Box(modifier = Modifier.fillMaxSize()) {
                 Text(
                     text = "Search Screen",
